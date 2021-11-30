@@ -17,6 +17,7 @@ namespace WindowsFormsApp1
         Random rnd = new Random();
         int marriage = 0;
         Block[] arr_block = new Block[11];
+        int complete=0;
 
 
         //-----------------------------------------
@@ -49,9 +50,12 @@ namespace WindowsFormsApp1
             label16.Text = "0";
             label17.Text = "0";
 
+            label21.Text = "0";
+
             label20.Text = marriage.ToString();
 
             button2.Enabled = false;
+            button3.Enabled = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -271,11 +275,8 @@ namespace WindowsFormsApp1
                             }
                         case 10:
                             {
-                                if (arr_block[i].value >= 40)
-                                {
-
-                                }
-
+                                check_foto(arr_block, i);
+                                complete++;
 
                                 break;
                             }
@@ -428,7 +429,7 @@ namespace WindowsFormsApp1
             while (true)
             {
                 Vremya(time, days);
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i <= 10; i++)
                 {
                     process(arr_block, i);
 
@@ -443,6 +444,14 @@ namespace WindowsFormsApp1
                 label15.Text = arr_block[7].value_comp.ToString();
                 label16.Text = arr_block[8].value_comp.ToString();
                 label17.Text = arr_block[9].value_comp.ToString();
+
+                label21.Text = complete.ToString();
+
+                if (arr_block[10].value > 39)
+                    button3.Enabled = true;
+                else
+                    button3.Enabled = false;
+
                 time++;
 
                 if (time == 1440)
@@ -451,6 +460,8 @@ namespace WindowsFormsApp1
 
                     time = 0;
                 }
+
+
             }
 
             pictureBox1.Image = Properties.Resources.подвоз_комп;
@@ -521,9 +532,17 @@ namespace WindowsFormsApp1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            pictureBox11.Image = Properties.Resources.вывоз_1;
-
             arr_block[10].work = true;
+            foto(arr_block, 10);
+
+            arr_block[10].time_max = rnd.Next(18, 20);
+
+            arr_block[10].value -= 40;
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
 
         }
     }
