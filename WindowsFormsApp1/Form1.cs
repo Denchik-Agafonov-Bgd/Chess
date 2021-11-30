@@ -16,6 +16,8 @@ namespace WindowsFormsApp1
     {
         Random rnd = new Random();
         int marriage = 0;
+        Block[] arr_block = new Block[11];
+
 
         //-----------------------------------------
 
@@ -48,6 +50,8 @@ namespace WindowsFormsApp1
             label17.Text = "0";
 
             label20.Text = marriage.ToString();
+
+            button2.Enabled = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -91,9 +95,9 @@ namespace WindowsFormsApp1
                             {
                                 arr_block[i].value--;
 
-                                arr_block[i + 1].value++;
-                                arr_block[i + 2].value++;
-                                arr_block[i + 3].value++;
+                                arr_block[i + 1].value+=40;
+                                arr_block[i + 2].value+=40;
+                                arr_block[i + 3].value+=40;
 
                                 arr_block[i + 1].work = true;
                                 arr_block[i + 2].work = true;
@@ -107,11 +111,14 @@ namespace WindowsFormsApp1
                                 {
                                     check_foto(arr_block, i);
                                 }
+
+                                button2.Enabled = true;
                                 break;
                             }
 
                         case 2:
                             {
+                                arr_block[i].value--;
                                 arr_block[i].time_max = rnd.Next(8, 12);
                                 arr_block[5].value++;
                                 arr_block[5].work = true;
@@ -125,6 +132,7 @@ namespace WindowsFormsApp1
                             }
                         case 3:
                             {
+                                arr_block[i].value--;
                                 arr_block[i].time_max = rnd.Next(13, 17);
                                 arr_block[6].value++;
                                 arr_block[6].work = true;
@@ -138,6 +146,7 @@ namespace WindowsFormsApp1
                             }
                         case 4:
                             {
+                                arr_block[i].value--;
                                 arr_block[i].time_max = rnd.Next(8, 12);
                                 arr_block[8].value1++;
 
@@ -249,14 +258,24 @@ namespace WindowsFormsApp1
                                 arr_block[i].time_max = rnd.Next(4, 6);
                                 arr_block[i].value--;
 
-                                //arr_block[i + 1].value++;
-                                //arr_block[i + 1].work = true;
+                                arr_block[i + 1].value++;
+                                
                                 //foto(arr_block, i + 1);
 
                                 if (arr_block[i].value == 0)
                                 {
                                     check_foto(arr_block, i);
                                 }
+
+                                break;
+                            }
+                        case 10:
+                            {
+                                if (arr_block[i].value >= 40)
+                                {
+
+                                }
+
 
                                 break;
                             }
@@ -386,7 +405,7 @@ namespace WindowsFormsApp1
         {
             button1.Enabled = false;
             int time = 0;
-            Block[] arr_block = new Block[11];
+            
 
             arr_block[0] = new Block(rnd.Next(28, 32));
             arr_block[1] = new Block(rnd.Next(28, 32));
@@ -404,15 +423,16 @@ namespace WindowsFormsApp1
             arr_block[0].work = true;
             pictureBox1.Image = Properties.Resources.подвоз_комп_1;
 
-            
-            while (time < 480)
+            int days = 0;
+
+            while (true)
             {
-                Vremya(time);
+                Vremya(time, days);
                 for (int i = 0; i < 10; i++)
                 {
                     process(arr_block, i);
 
-                    await Task.Delay(5);
+                    await Task.Delay(1);
                 }
 
                 label10.Text = arr_block[2].value_comp.ToString();
@@ -424,6 +444,13 @@ namespace WindowsFormsApp1
                 label16.Text = arr_block[8].value_comp.ToString();
                 label17.Text = arr_block[9].value_comp.ToString();
                 time++;
+
+                if (time == 1440)
+                {
+                    days++;
+
+                    time = 0;
+                }
             }
 
             pictureBox1.Image = Properties.Resources.подвоз_комп;
@@ -461,30 +488,42 @@ namespace WindowsFormsApp1
 
                 time++;
             }
-
-
-
-
         }
-        private void Vremya(int time)
+        private void Vremya(int time, int days)
         {
             int min, hour;
             string noll = "";
             string nol = "";
             min = time % 60;
-            hour = (time / 60) + 8;
+            hour = time / 60;
+
             if (min < 10)
                 noll = "0";
             if (hour < 10)
                 nol = "0";
-            string clock_sring = $"{nol}{hour}:{noll}{min}";
-            if (time == 479)
-            clock_sring = "16:00";
+
+            string clock_sring = $"{days} суток {nol}{hour}:{noll}{min}";
+
             label9.Text = clock_sring;
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            arr_block[0].value = 1;
+            arr_block[0].work = true;
+            pictureBox1.Image = Properties.Resources.подвоз_комп_1;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            pictureBox11.Image = Properties.Resources.вывоз_1;
+
+            arr_block[10].work = true;
 
         }
     }
